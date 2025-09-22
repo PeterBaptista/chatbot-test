@@ -1,19 +1,29 @@
-// Use "type: module" in package.json to use ES modules
-import express from "express";
-import cors from "cors";
-const app = express();
-const port = 3000;
+import http from "node:http";
 
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN?.split(",") ?? [],
-  })
-);
-// Define your routes
-app.get("/", (req, res) => {
-  res.json({ message: "Hello from Express on Vercel!" });
+import { env } from "./common/utils/envConfig";
+import { app } from "./server";
+import { connectToWhatsApp } from "./wss";
+
+const server = http.createServer(app);
+
+// Attach WebSocket server to HTTP server
+connectToWhatsApp();
+
+// Start HTTP server
+server.listen(env.PORT, () => {
+  const { NODE_ENV, PORT, HOST } = env;
+  console.log(`Server (${NODE_ENV}) running at http://${HOST}:${PORT}`);
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// Graceful shutdown
+const onCloseSignal = () => {
+  console.log("SIGINT/SIGTERM received, shutting down");
+  server.close(() => {
+    console.log("Server closed");
+    process.exit();
+  });
+  setTimeout(() => process.exit(1), 10000).unref();
+};
+
+process.on("SIGINT", onCloseSignal);
+process.on("SIGTERM", onCloseSignal);

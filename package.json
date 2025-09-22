@@ -1,25 +1,37 @@
 {
-  "name": "chatbot-test",
-  "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
+  "name": "express-typescript-boilerplate",
+  "version": "1.0.14",
+  "description": "An Express boilerplate backend",
+  "author": "Pedro Baptista",
+  "repository": "pedrobaptista/chatbot-test",
+  "license": "MIT",
+  "main": "index.ts",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup",
+    "start:dev": "tsx watch --clear-screen=false src/index.ts",
+    "start:prod": "node dist/index.js",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --fix",
+    "format": "biome format --write",
+    "test": "vitest run",
+    "test:cov": "vitest run --coverage",
+    "render-dbml": "npx tsx src/db/generate-dbml.ts && npx  dbml-renderer -i src/db/schema.dbml -o src/db/erd.png"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "@hapi/boom": "^10.0.1",
     "@whiskeysockets/baileys": "^7.0.0-rc.3",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "envalid": "^8.1.0",
     "express": "^5.1.0",
     "pino": "^9.10.0",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "tsx": "^4.20.5"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3"
+    "@types/express": "^5.0.3",
+    "@types/qrcode": "^1.5.5"
   }
 }

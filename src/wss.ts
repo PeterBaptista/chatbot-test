@@ -13,7 +13,6 @@ export async function connectToWhatsApp() {
 
   const sock = makeWASocket({
     auth: state,
-    printQRInTerminal: true, // Mostra QR no terminal
   });
 
   // --- Eventos de conexão e QR Code ---
@@ -22,7 +21,7 @@ export async function connectToWhatsApp() {
 
     if (qr) {
       console.log("📸 QR Code recebido, gerando imagem...");
-      QRCode.toFile("./qrcode.png", qr, { width: 300 }, (err) => {
+      QRCode.toFile("./src/qrcode.png", qr, { width: 300 }, (err) => {
         if (err) console.error("Erro ao salvar QR Code:", err);
         else console.log("✅ QR Code salvo como qrcode.png");
       });

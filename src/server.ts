@@ -19,6 +19,7 @@ app.use(
 
 // ✅ Endpoint returning QR Code as base64 JSON
 app.get("/qrcode", (req, res) => {
+  console.log("QR Code requested");
   const imagePath = path.join(__dirname, "qrcode.png");
 
   try {
